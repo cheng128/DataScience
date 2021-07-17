@@ -19,5 +19,5 @@ https://www.kaggle.com/c/nthuds2021hw3/overview
 ### Assignment 5: Network Compression
 - Final grade: 100  
 
-### Term project: Analysis of Stock Market across Different Interne Forums  
+### Term project: Analysis of Stock Market across Different Internet Forums  
 - Final grade: 90
