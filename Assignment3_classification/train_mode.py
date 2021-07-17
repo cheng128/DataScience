@@ -10,18 +10,6 @@ from imblearn.under_sampling import RandomUnderSampler
 from sklearn.metrics import f1_score, recall_score, precision_score, accuracy_score
 
 
-epoch = sys.argv[1]
-lr = sys.argv[2]
-train_df = pd.read_csv('nthuds2021hw3/train.csv')
-test_df = pd.read_csv('nthuds2021hw3/test.csv')
-
-impute_knn = KNNImputer(n_neighbors=21)
-
-xgbc = XGBClassifier(n_estimators=int(epoch),
-                     eta=float(lr),
-                     subsample=0.5,
-                     colsample_bytree=0.5)
-
 def trans_date(df):
     df.Date = pd.to_datetime(df.Date)
     df["Year"] = df.Date.dt.year
@@ -30,7 +18,8 @@ def trans_date(df):
     del df["Date"]
     return df
 
-def impute_value(df, float_df):
+def impute_value(df):
+    impute_knn = KNNImputer(n_neighbors=21)
     float_df = df.select_dtypes(include='float')
     value = impute_knn.fit_transform(float_df)
 
@@ -42,7 +31,7 @@ def impute_value(df, float_df):
     df['Month'].apply(lambda x: int(x))
     df['Day'].apply(lambda x: int(x))
     
-    pd.get_dummies(df)
+    df = pd.get_dummies(df)
     return df
 
 def over_under_sampling(target, label):
@@ -54,7 +43,12 @@ def over_under_sampling(target, label):
     
     return target, label
 
-def train_model(X, y):
+def train_model(X, y, epoch, lr):
+    xgbc = XGBClassifier(n_estimators=int(epoch),
+                         eta=float(lr),
+                         subsample=0.5,
+                         colsample_bytree=0.5)
+    
     X_train, X_test, y_train, y_test = train_test_split(X, y, 
                                                     random_state=5, 
                                                     train_size=0.9)
@@ -76,6 +70,11 @@ def train_model(X, y):
     return trained_model
     
 def main():
+    epoch = sys.argv[1]
+    lr = sys.argv[2]
+    train_df = pd.read_csv('nthuds2021hw3/train.csv')
+    test_df = pd.read_csv('nthuds2021hw3/test.csv')
+    
     train_df = trans_date(train_df)
     train_df['label'] = train_df['Weather']
     del train_df['Weather']
@@ -88,10 +87,10 @@ def main():
 
     for col in X.select_dtypes(include=['float']):
         X[col] = preprocessing.scale(X[col])
-
+        
     X, y = over_under_sampling(X, y)
 
-    trained_model = train_model(X, y)
+    trained_model = train_model(X, y, epoch, lr)
     test_res = trained_model.predict(test_df)
 
     index = range(len(test_res))
