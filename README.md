@@ -1,13 +1,16 @@
 ## Data Science 
 
 ### Assignment 1: Crawler  
+Crawl data from Ethereum.  
 - Final grade: 100  
 
 ### Assignment 2: Freqent Pattern Mining
-Implement FP Tree.  
+Given transactions, min support, implement algorithms to find the frequent patterns.  
+Use any algorithms, include Apriori、FP Growth...etc.    
 - Final grade: 95  
 
 ### Assignment 3: Kaggle Classification Competition
+https://www.kaggle.com/c/nthuds2021hw3/overview
 - Final grade: 92  
 
 ### Assignment 4: Global Optimization
@@ -16,5 +19,5 @@ Implement FP Tree.
 ### Assignment 5: Network Compression
 - Final grade: 100  
 
-### Term project: 
+### Term project: Analysis of Stock Market across Different Interne Forums  
 - Final grade: 90
